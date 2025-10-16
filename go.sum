@@ -1,0 +1,8 @@
+github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERoyfY=
+github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
+github.com/SteamServerUI/PluginLib v0.0.1 h1:qismgj91Rcjl37g/0liLMNrY44SMuMbJP3b/nhRtHco=
+github.com/SteamServerUI/PluginLib v0.0.1/go.mod h1:WsBvgX2flLyT3amLWNCuZW3Xagwbv9zDnN7CfG9JiVI=
+github.com/SteamServerUI/PluginLib v0.0.2 h1:LaBB2z++QB5rn6RtnibI8vBUPgNbVZ2WjeZX8VvFmcw=
+github.com/SteamServerUI/PluginLib v0.0.2/go.mod h1:WsBvgX2flLyT3amLWNCuZW3Xagwbv9zDnN7CfG9JiVI=
+golang.org/x/sys v0.10.0 h1:SqMFp9UcQJZa+pmYuAKjd9xq1f0j5rLcDIk0mj4qAsA=
+golang.org/x/sys v0.10.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
