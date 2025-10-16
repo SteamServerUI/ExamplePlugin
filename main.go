@@ -2,21 +2,66 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/SteamServerUI/PluginLib"
 )
 
-type ServerStatus struct {
-	Status bool   `json:"isRunning"`
-	UUID   string `json:"uuid"`
-}
+var settingsResponse PluginLib.SettingsResponse
 
 func main() {
-	var response ServerStatus
+	PluginLib.InitConfig("ExamplePlugin", "Info")
+	GetStatus()
+	LogSomething()
+	SaveASetting()
+	GetSetting()
+	//GetAllSettings()
+}
 
-	if err := PluginLib.Get("/api/v2/server/status", &response); err != nil {
+func GetStatus() {
+	rsp, err := PluginLib.GetServerStatus()
+	if err != nil {
+		log.Fatalf("Failed to get server status: %v", err)
+	}
+
+	fmt.Println("Server running:", rsp.Status, "UUID:", rsp.UUID)
+}
+
+func LogSomething() {
+	// allows either a message
+	PluginLib.Log("Test")
+	// or a message and a log level
+	PluginLib.Log("Test", "Info")
+	// also allows proper error handling
+	err := PluginLib.Log("Test", "Non-Existing-Level")
+	if err != nil {
+		fmt.Println("Error (expected, since level doesn't exist):", err)
+	}
+}
+
+func SaveASetting() {
+
+	payload := map[string]string{"GameBranch": "public"}
+
+	if err := PluginLib.Post("/api/v2/settings/save", &payload, &settingsResponse); err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Server running:", response.Status, "UUID:", response.UUID)
+	fmt.Println("Setting saved:", settingsResponse.Message)
+}
+
+func GetSetting() {
+	value, err := PluginLib.GetSetting("GameBranch")
+	if err != nil {
+		log.Printf("Failed to get setting: %v", err)
+		return
+	}
+	fmt.Printf("Setting 'GameBranch': %v\n", value)
+}
+
+func GetAllSettings() {
+	settings := PluginLib.GetAllSettings()
+	for key, value := range settings {
+		fmt.Printf("Setting '%s': %v\n", key, value)
+	}
 }
