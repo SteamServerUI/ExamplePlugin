@@ -2,7 +2,7 @@ module test
 
 go 1.25.0
 
-require github.com/SteamServerUI/PluginLib v0.0.13
+require github.com/SteamServerUI/PluginLib v0.0.19
 
 require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect

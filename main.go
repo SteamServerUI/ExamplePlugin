@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"sync"
+	"test/api"
 
 	"github.com/SteamServerUI/PluginLib"
 )
@@ -16,6 +18,7 @@ func main() {
 	SaveASetting()
 	GetSetting()
 	//GetAllSettings()
+	ExposeAPI()
 }
 
 func GetStatus() {
@@ -64,4 +67,12 @@ func GetAllSettings() {
 	for key, value := range settings {
 		fmt.Printf("Setting '%s': %v\n", key, value)
 	}
+}
+
+func ExposeAPI() {
+	PluginLib.RegisterRoute("/", api.HandleIndex)
+
+	var wg sync.WaitGroup
+	PluginLib.ExposeAPI(&wg)
+	wg.Wait()
 }
