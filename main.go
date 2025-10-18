@@ -1,21 +1,31 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"log"
 	"sync"
-	"test/api"
 
+	"github.com/SteamServerUI/ExamplePlugin/api"
+	"github.com/SteamServerUI/ExamplePlugin/global"
 	"github.com/SteamServerUI/PluginLib"
 )
 
-var settingsResponse PluginLib.SettingsResponse
-var wg sync.WaitGroup
+//go:embed assets/*
+var assets embed.FS
+
+var (
+	settingsResponse PluginLib.SettingsResponse
+	wg               sync.WaitGroup
+)
 
 func main() {
 
-	PluginLib.InitConfig("ExamplePlugin", "Info")
-	GetStatus()
+	// Register embedded assets
+	global.AssetManager = PluginLib.RegisterAssets(&assets)
+
+	PluginLib.InitConfig(global.PluginName, global.DefaultLogLevel)
+	GetGameserverRunningStatus()
 	LogSomething()
 	SaveASetting()
 	GetSetting()
@@ -24,13 +34,13 @@ func main() {
 	wg.Wait()
 }
 
-func GetStatus() {
+func GetGameserverRunningStatus() {
 	rsp, err := PluginLib.GetServerStatus()
 	if err != nil {
 		log.Fatalf("Failed to get server status: %v", err)
 	}
 
-	fmt.Println("Server running:", rsp.Status, "UUID:", rsp.UUID)
+	fmt.Println("Gameserver running:", rsp.Status, "UUID:", rsp.UUID)
 }
 
 func LogSomething() {
@@ -74,7 +84,7 @@ func GetAllSettings() {
 
 func ExposeAPI(wg *sync.WaitGroup) {
 
-	PluginLib.RegisterRoute("/", api.HandleIndex)
+	PluginLib.RegisterRoute("/", api.HandleIndexFromAssetsManager)
 	PluginLib.RegisterRoute("/something", api.HandleSomethingElse)
 	PluginLib.ExposeAPI(wg)
 	PluginLib.RegisterPluginAPI()
