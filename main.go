@@ -84,8 +84,9 @@ func GetAllSettings() {
 
 func ExposeAPI(wg *sync.WaitGroup) {
 
-	PluginLib.RegisterRoute("/", api.HandleIndexFromAssetsManager)
+	PluginLib.RegisterRoute("/", api.HandleTextFromAssetsManager)
 	PluginLib.RegisterRoute("/something", api.HandleSomethingElse)
+	PluginLib.RegisterRoute("/image", api.HandleBinaryFromAssetsManager)
 	PluginLib.ExposeAPI(wg)
 	PluginLib.RegisterPluginAPI()
 
