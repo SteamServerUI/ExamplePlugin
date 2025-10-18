@@ -10,15 +10,18 @@ import (
 )
 
 var settingsResponse PluginLib.SettingsResponse
+var wg sync.WaitGroup
 
 func main() {
+
 	PluginLib.InitConfig("ExamplePlugin", "Info")
 	GetStatus()
 	LogSomething()
 	SaveASetting()
 	GetSetting()
 	//GetAllSettings()
-	ExposeAPI()
+	ExposeAPI(&wg)
+	wg.Wait()
 }
 
 func GetStatus() {
@@ -69,10 +72,12 @@ func GetAllSettings() {
 	}
 }
 
-func ExposeAPI() {
-	PluginLib.RegisterRoute("/", api.HandleIndex)
+func ExposeAPI(wg *sync.WaitGroup) {
 
-	var wg sync.WaitGroup
-	PluginLib.ExposeAPI(&wg)
-	wg.Wait()
+	PluginLib.RegisterRoute("/", api.HandleIndex)
+	PluginLib.RegisterRoute("/something", api.HandleSomethingElse)
+	PluginLib.ExposeAPI(wg)
+	PluginLib.RegisterPluginAPI()
+	PluginLib.Log("Registered in SSUI API")
+
 }

@@ -53,3 +53,7 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprintf(w, "%s", html)
 }
+
+func HandleSomethingElse(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Something else")
+}
