@@ -49,7 +49,7 @@ func SaveASetting() {
 
 	payload := map[string]string{"GameBranch": "public"}
 
-	if err := PluginLib.Post("/api/v2/settings/save", &payload, &settingsResponse); err != nil {
+	if _, err := PluginLib.Post("/api/v2/settings/save", &payload, &settingsResponse); err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
@@ -78,6 +78,5 @@ func ExposeAPI(wg *sync.WaitGroup) {
 	PluginLib.RegisterRoute("/something", api.HandleSomethingElse)
 	PluginLib.ExposeAPI(wg)
 	PluginLib.RegisterPluginAPI()
-	PluginLib.Log("Registered in SSUI API")
 
 }
